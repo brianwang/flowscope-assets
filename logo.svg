@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#ffffff"/>
+  <rect x="8" y="8" width="496" height="496" rx="88" fill="none" stroke="#dfe1e6" stroke-width="8"/>
+  <!-- 坐标轴 -->
+  <path d="M120 120 L120 400 L404 400" fill="none" stroke="#172b4d" stroke-width="22"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 分位线 -->
+  <line x1="120" y1="300" x2="404" y2="300" stroke="#0052cc" stroke-width="14" stroke-linecap="round"/>
+  <line x1="120" y1="212" x2="404" y2="212" stroke="#ff8b00" stroke-width="12"
+        stroke-linecap="round" stroke-dasharray="30 18"/>
+  <!-- 点 -->
+  <g fill="#4c9aff">
+    <circle cx="168" cy="352" r="20"/><circle cx="216" cy="336" r="20"/>
+    <circle cx="264" cy="356" r="20"/><circle cx="312" cy="318" r="20"/>
+    <circle cx="360" cy="332" r="20"/>
+  </g>
+  <g fill="#ff5630">
+    <circle cx="240" cy="168" r="22"/><circle cx="336" cy="144" r="22"/>
+  </g>
+</svg>
