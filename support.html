@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — Cycle Time Scatter Chart for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Support</h1>
+<p class="sub"><strong>Cycle Time Scatter Chart for Jira Dashboard</strong></p>
+
+<h2>Contact</h2>
+<p>Email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> and include the
+details below. This is a small app maintained by one person; replies are best-effort
+and there is no guaranteed response time.</p>
+
+<h2>What to include</h2>
+<p>These four things let most problems be diagnosed from the first message:</p>
+<ul>
+  <li>Your Jira site URL (for example <code>yourcompany.atlassian.net</code>)</li>
+  <li>Whether you are on Jira Cloud, and roughly how many issues the gadget is configured to
+  look at</li>
+  <li>The gadget's configuration: the JQL filter, and which statuses you picked as
+  "started" and "done"</li>
+  <li>What you expected to see and what you saw instead — a screenshot helps a lot</li>
+</ul>
+
+<h2>Common questions</h2>
+
+<p><strong>Why is a percentile line missing?</strong><br>
+Percentile lines are only drawn when there are enough samples for the number to mean something.
+Below that threshold the line is deliberately omitted and the gadget says how many samples are
+needed. A 95th percentile computed from a handful of issues would just be the maximum, which is
+worse than showing nothing.</p>
+
+<p><strong>Why does the count not match my filter?</strong><br>
+The gadget counts issues that <em>completed</em> inside the time window and that have a
+recorded transition into the status you chose as "started". Some issues are excluded, and the
+gadget always shows how many and why — it never silently counts them as zero.</p>
+
+<p><strong>An issue's cycle time looks wrong.</strong><br>
+If an issue was reopened, the last completion is used. If an issue re-entered the start status,
+the last entry is used. If an issue was created already sitting in the start status, there is no
+"entered the start status" event to find, so its clock starts at creation — those items are
+counted separately and the count is shown.</p>
+
+<h2>Privacy</h2>
+<p>What the app reads and stores is documented in the
+<a href="./privacy.html">privacy policy</a>. In short: it reads Jira issues as you, stores a
+one-hour cache inside Atlassian's own storage, and sends nothing to any external service.</p>
+
+<footer>
+Cycle Time Scatter Chart for Jira Dashboard — Atlassian Marketplace partner andy20261001.
+</footer>
+
+</main></body></html>
