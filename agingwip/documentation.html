@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — Aging WIP Chart for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul,ol{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Documentation</h1>
+<p class="sub"><strong>Aging WIP Chart for Jira Dashboard</strong></p>
+<p class="sub">Last updated: 1 October 2026</p>
+
+<p>This page covers everything the app does. It is written to match the app's behaviour,
+including the parts that are unflattering — where the numbers can mislead, this page says so.</p>
+
+<h2>1. What the app does</h2>
+
+<p>It is a Jira dashboard gadget that shows <strong>how long work has been sitting
+still</strong>. You give it a JQL filter. For every work item that has not finished yet, it
+measures the time since that item last changed status — which is exactly how long it has been
+in the status it is in now:</p>
+
+<ul>
+  <li><strong>x</strong> — the date the item entered its current status</li>
+  <li><strong>y</strong> — how many days it has been there</li>
+</ul>
+
+<p>Four horizontal lines are drawn on top: the <strong>50th, 70th, 85th and 95th
+percentiles</strong> of those ages, each labelled in days. A summary line shows the sample
+size and the percentile values.</p>
+
+<p>Why percentiles and not an average: the useful question is not "how long does work usually
+sit" but "how long has the worst of it been sitting". Items past the 85th percentile are
+highlighted, because that tail is the work that is quietly not moving.</p>
+
+<p><strong>No status configuration is needed.</strong> The app reads each item's own history,
+so the moment it entered its current status is a fact in the data, not something you have to
+tell it. Items that have never changed status at all are counted from their creation date, and
+that count is shown separately.</p>
+
+<h2>2. Requirements</h2>
+
+<ul>
+  <li>Jira Cloud.</li>
+  <li>A dashboard you can edit.</li>
+  <li>The JQL filter you want the chart scoped to — for example <code>project = ABC</code>.</li>
+</ul>
+
+<h2>3. Add the gadget to a dashboard</h2>
+
+<ol>
+  <li>Open a Jira dashboard and choose <strong>Edit</strong>.</li>
+  <li>Choose <strong>Add gadget</strong> and search for <em>Aging WIP Chart</em>.</li>
+  <li>Add it, then open its configuration (the gadget's menu → <strong>Configure</strong>).</li>
+  <li>Fill in the setting below and choose <strong>Save</strong>.</li>
+</ol>
+
+<h2>4. Settings</h2>
+
+<h3>JQL filter</h3>
+<p>Which issues the chart is built from. Use the <strong>Preview</strong> button to see how many
+issues currently match before you commit to a filter. Items that have already finished are
+excluded automatically — this chart is about work that is still in flight.</p>
+
+<h3>No status pickers</h3>
+<p>There is nothing to configure here. The app reads each item's own status history, so the
+moment it entered its current status is a fact in the data rather than something you have to
+tell it. This also means the gadget keeps working when your Jira is displayed in another
+language — no status name is ever typed or stored.</p>
+
+<div class="note">
+<strong>Statuses are stored by ID, not by name.</strong> Jira instances often contain several
+statuses that share one name (for example, more than one status called <em>Done</em>). If two
+statuses in the list have the same name, the app shows a <code>#id</code> after each so you can
+tell them apart. Because the ID is what is saved, changing your Jira display language does not
+break an existing gadget.
+</div>
+
+
+<h2>5. How the age is counted</h2>
+
+<p>These rules exist because Jira's history does not always contain a clean "entered" event.
+The app resolves each case explicitly rather than guessing:</p>
+
+<ul>
+  <li><strong>Calendar days</strong>, not working days. A weekend counts.</li>
+  <li><strong>Items that moved back into a status they had before</strong> — the <em>last</em>
+      transition is used, so an item that bounced back is measured from when it came back.</li>
+  <li><strong>Items that have never changed status at all</strong> — there is no transition to
+      read, so the clock starts at creation. These are counted separately and the count is shown,
+      so you can judge how much they affect the chart.</li>
+  <li><strong>Items where even that cannot be established</strong> are excluded — and the number
+      excluded is always displayed. They are never quietly counted as zero, because a zero would
+      drag the percentiles down and look like good news.</li>
+</ul>
+
+<h2>6. Percentile lines and sample size</h2>
+
+<div class="note">
+A 95th percentile calculated from 20 issues is, in practice, just the largest of those 20
+numbers. It is not an estimate of anything.
+</div>
+
+<p>The app therefore only draws a percentile line when there is enough data for it to mean
+something. Below that threshold the line is omitted, and the gadget shows why instead of drawing
+a line that would be mistaken for a measurement.</p>
+
+<h2>7. Languages</h2>
+
+<p>The gadget interface is available in <strong>English</strong> and <strong>Chinese
+(Simplified)</strong>. Because statuses are stored by ID (section 4), a gadget configured in
+English keeps working when Jira is switched to another display language.</p>
+
+<h2>8. Data and privacy</h2>
+
+<p>The app reads issues through the Jira REST API using a read-only scope. It does not send data
+to any external service, and it has no third-party integrations. The full description of what is
+read, what is stored and where is in the <a href="./privacy.html">privacy policy</a>.</p>
+
+<h2>9. Support</h2>
+
+<p>Questions, bug reports and feature requests: see the
+<a href="./support.html">support page</a>, or email
+<a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.</p>
+
+<footer>
+Aging WIP Chart for Jira Dashboard — an app on the Atlassian Marketplace.
+See also the <a href="./privacy.html">privacy policy</a> and the
+<a href="./support.html">support page</a>.
+</footer>
+
+</main></body></html>
