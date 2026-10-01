@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — Burnline</title><meta name="description" content="How the Burnline Jira gadget computes its burnup chart and its completion forecast.">
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+<h1>Documentation</h1>
+<p class="sub"><strong>Burnline: Burnup &amp; Burndown with Forecast</strong></p>
+
+<h2>1. What the app does</h2>
+<p>Burnline draws a dashboard gadget with two lines and the gap between them:</p>
+<ul>
+  <li><strong>scope</strong> — how much work is on the books</li>
+  <li><strong>delivered</strong> — how much of it is finished</li>
+  <li>the <strong>gap</strong> between the two lines is what is left to do</li>
+</ul>
+<p>It then takes the rate at which the team has actually been finishing work and projects when
+the remainder will be done. That projection is the part that is hard to get from a screenshot of
+a board.</p>
+
+<h2>2. Requirements</h2>
+<p>Jira Cloud. No other app, no admin action beyond installing it, and no external service.</p>
+
+<h2>3. Add the gadget to a dashboard</h2>
+<p>Open a dashboard, choose <em>Add gadget</em>, and search for <em>Burnline</em>. Then open the
+gadget's settings and fill in the filter.</p>
+
+<h2>4. Settings</h2>
+<table>
+  <tr><th>Setting</th><th>Meaning</th></tr>
+  <tr><td>JQL filter</td><td>Which work items are in scope. Everything not yet done is always
+      included, however long it has been idle.</td></tr>
+  <tr><td>Done status</td><td>Entering this status counts as delivered. Picked from your
+      project's status list.</td></tr>
+  <tr><td>History window</td><td>How many weeks of history to chart and to measure throughput
+      over. Default 12. Maximum 104.</td></tr>
+  <tr><td>Target date</td><td>Optional. Draws a vertical line on that day, so the chart can show
+      whether the projection lands before or after it.</td></tr>
+</table>
+
+<h2>5. How the chart is computed</h2>
+<p>For any day <code>d</code> in the window:</p>
+<ul>
+  <li><code>scope(d)</code> counts the items that existed on day <code>d</code></li>
+  <li><code>delivered(d)</code> counts the items finished by day <code>d</code></li>
+  <li><code>remaining(d) = scope(d) − delivered(d)</code></li>
+</ul>
+<p>An item counts as delivered at the moment it <em>last</em> entered the Done status you chose.
+If it was reopened and finished again, the later moment is used.</p>
+
+<h2>6. The forecast, percentile lines, and sample size</h2>
+<p>Throughput is measured in whole 7-day periods ending today, so a half-finished week is never
+counted and cannot drag the projection backwards. Every week is kept, including weeks in which
+nothing was finished — a week with zero deliveries is data, not a missing value.</p>
+<p>The projection is <code>weeks remaining = items remaining ÷ throughput</code>, evaluated at
+four percentiles of those weekly counts. This is exact rather than approximate: dividing by a
+throughput value is a monotone transformation, and percentiles are equivariant under monotone
+transformations, so dividing by the 50th-percentile throughput gives the 50th-percentile
+completion time — not an estimate of it.</p>
+<p>A percentile line is drawn only when the window has enough whole weeks to support it:</p>
+<table>
+  <tr><th>Line</th><th>Whole weeks of history required</th></tr>
+  <tr><td>p50</td><td>5</td></tr>
+  <tr><td>p70</td><td>10</td></tr>
+  <tr><td>p85</td><td>20</td></tr>
+  <tr><td>p95</td><td>40</td></tr>
+</table>
+<p>Below the threshold the line is omitted and the reason is printed under the chart, instead of
+being drawn from too few observations. A projection beyond two years is also omitted.</p>
+
+<h2>7. What the chart does not claim</h2>
+<div class="note">
+<p style="margin:0 0 8px"><strong>Read this before treating a forecast date as a commitment.</strong></p>
+<ul style="margin:0">
+  <li>The scope line is <em>today's</em> set of items traced backwards by creation date. Items
+      that finished before the history window and were not touched since are not in it, so the
+      early part of the scope line is lower than the true historical scope.</li>
+  <li>The projection assumes throughput continues like the history window. If the team changes,
+      it changes. It is a projection, not a schedule.</li>
+  <li>All counts are work items and all time is calendar days, not working days.</li>
+  <li>Items in a done-category status that never passed through your chosen Done status are
+      excluded and reported — they are neither counted as delivered nor as remaining.</li>
+  <li>If a filter matches more items than the app scans, the chart says so. A truncated scan
+      understates what is remaining and makes the projection too early.</li>
+</ul>
+</div>
+
+<h2>8. Languages</h2>
+<p>English and Simplified Chinese. Statuses are stored by ID rather than by name, so the gadget
+keeps working regardless of the language Jira is displayed in — and it is unaffected by two
+different statuses that happen to share a name.</p>
+
+<h2>9. Data and privacy</h2>
+<p>The app reads only issue keys, creation dates, statuses and status transition timestamps, as
+the viewing user, and caches the computed numbers for one hour. It makes no external network
+requests at all. Full detail in the <a href="./privacy.html">privacy policy</a>.</p>
+<footer>Burnline: Burnup &amp; Burndown with Forecast — a Jira dashboard gadget. <a href="./index.html">Home</a> ·
+<a href="./privacy.html">Privacy</a> · <a href="./support.html">Support</a> ·
+<a href="./documentation.html">Documentation</a> · <a href="./security.html">Security</a></footer>
+</main></body></html>

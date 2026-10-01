@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — Burnline</title><meta name="description" content="Support contact and troubleshooting for the Burnline Jira dashboard gadget.">
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+<h1>Support</h1>
+<p class="sub"><strong>Burnline: Burnup &amp; Burndown with Forecast</strong></p>
+
+<h2>Contact</h2>
+<p>Email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>. This is a small independent product, not a
+staffed help desk — there is no guaranteed response time, and we would rather say that plainly
+than print a service level we cannot keep.</p>
+
+<h2>What to include</h2>
+<p>These four things make the difference between a guess and a diagnosis:</p>
+<ul>
+  <li>your Jira site URL, and the JQL filter configured on the gadget</li>
+  <li>the <strong>Done status</strong> you selected (its name, and its numeric ID if you know it)</li>
+  <li>what you expected the chart to show, and what it showed instead</li>
+  <li>a screenshot of the gadget, including the summary line underneath the chart</li>
+</ul>
+<p>The summary line under the chart carries the numbers we would otherwise have to ask you for:
+scope, delivered, remaining, the throughput figure with its sample size, and any items that were
+excluded. Please do not remove it from the screenshot.</p>
+
+<h2>Common questions</h2>
+
+<h3>The chart is empty</h3>
+<p>The filter probably matches nothing, or matches only items that were already done before the
+history window began. Use the <strong>Preview</strong> button in the gadget's settings — it
+returns a count without drawing anything, so you can tell whether the filter itself is wrong.</p>
+
+<h3>Nothing is counted as delivered</h3>
+<p>Check the <strong>Done status</strong> setting. The chart counts an item as delivered only
+when it <em>entered that exact status</em>. If your workflow finishes work in a status other
+than the one selected, everything will look unfinished. The chart reports items that are in a
+done-category status but never passed through your chosen status, so a number under that note is
+the signal that this setting is wrong.</p>
+
+<h3>There is no forecast line</h3>
+<p>That is deliberate. A percentile line is only drawn when the history window contains enough
+whole weeks to support it: 5 weeks for the 50th percentile, 10 for the 70th, 20 for the 85th, 40
+for the 95th. With the default 12-week window you will normally see the 50th and 70th. See
+<a href="./documentation.html">documentation</a> for why.</p>
+
+<h3>The forecast date looks too optimistic or too pessimistic</h3>
+<p>It is a projection from your own recent throughput, nothing more. If the last few weeks were
+unusual, the forecast will be too. Widening the history window makes it steadier; narrowing it
+makes it more responsive.</p>
+<footer>Burnline: Burnup &amp; Burndown with Forecast — a Jira dashboard gadget. <a href="./index.html">Home</a> ·
+<a href="./privacy.html">Privacy</a> · <a href="./support.html">Support</a> ·
+<a href="./documentation.html">Documentation</a> · <a href="./security.html">Security</a></footer>
+</main></body></html>

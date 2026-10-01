@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security — Burnline</title><meta name="description" content="Security notes for the Burnline Jira dashboard gadget: scopes, egress and secrets.">
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+<h1>Security</h1>
+<p class="sub"><strong>Burnline: Burnup &amp; Burndown with Forecast</strong></p>
+
+<h2>1. Where the code runs</h2>
+<p>Entirely on Atlassian Forge. There is no server of ours, no container of ours, and no
+externally reachable endpoint of ours. The app consists of a Forge-hosted resolver function and
+a Custom UI bundle served from Atlassian's CDN. Atlassian is the operator of the runtime.</p>
+
+<h2>2. Permissions and identity</h2>
+<p>The app requests exactly one scope: <code>read:jira-work</code>. It does not request
+<code>write:jira-work</code>, <code>manage:jira-configuration</code>, or any administrative
+scope. Every Jira request is made as the viewing user, so Jira's own permission scheme is the
+security boundary — the app cannot surface an issue to someone who is not allowed to see it.</p>
+
+<h2>3. Network access</h2>
+<p>The app declares no external egress and makes none. It does not call any third-party API, and
+it has no API tokens or credentials of any kind to leak. There is no webhook, no web trigger
+endpoint, and no scheduled job that could be invoked from outside Jira.</p>
+
+<h2>4. Secrets</h2>
+<p>There are none. The app stores no secrets, environment variables, API tokens, or customer
+credentials — neither in Forge storage nor anywhere else.</p>
+
+<h2>5. Data handling</h2>
+<p>See the <a href="./privacy.html">privacy policy</a> for the exact list of fields read and the
+one-hour cache record written. In short: issue keys, creation dates, statuses and status
+transition timestamps; nothing else; retained for one hour.</p>
+
+<h2>6. Reporting a vulnerability</h2>
+<p>Write to <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> with enough detail to reproduce the issue.
+Please do not open a public issue before we have had a chance to respond. We will acknowledge
+your report and tell you what we found.</p>
+<footer>Burnline: Burnup &amp; Burndown with Forecast — a Jira dashboard gadget. <a href="./index.html">Home</a> ·
+<a href="./privacy.html">Privacy</a> · <a href="./support.html">Support</a> ·
+<a href="./documentation.html">Documentation</a> · <a href="./security.html">Security</a></footer>
+</main></body></html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — Burnline</title><meta name="description" content="Privacy policy for the Burnline Jira dashboard gadget.">
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+<h1>Privacy Policy</h1>
+<p class="sub"><strong>Burnline: Burnup &amp; Burndown with Forecast</strong></p>
+<p class="sub">Last updated: 1 October 2026</p>
+
+<p>This app is a Jira dashboard gadget published on the Atlassian Marketplace by the Marketplace
+partner <strong>flowscope</strong> (referred to below as "we"). This page describes exactly what
+the app does with data. It is written to match the app's source code, not to describe a general
+policy.</p>
+
+<h2>1. What the app reads</h2>
+
+<p>The app reads Jira issues through the official Jira REST API, using the
+<code>read:jira-work</code> scope and nothing else. Every request is made
+<strong>as the user who is viewing the gadget</strong> — the app can only ever see the issues
+that the person looking at the dashboard is already allowed to see. It never uses an
+administrator identity, and it cannot read anything a viewer could not read themselves.</p>
+
+<p>For issues matched by a JQL filter that a Jira administrator configures on the gadget, it
+reads:</p>
+<ul>
+  <li>the issue key (for example <code>ABC-123</code>)</li>
+  <li>the issue creation date</li>
+  <li>the issue's current status</li>
+  <li>the issue's status transition history — which status it moved to, and when</li>
+</ul>
+
+<p>The app does not read issue summaries, descriptions, comments, attachments, custom field
+values, user profile details, email addresses, or any other content.</p>
+
+<h2>2. What the app stores</h2>
+
+<p>For one hour, the app caches the <em>computed result</em> of the chart so that a dashboard
+reload does not re-query Jira. That cached record contains:</p>
+<ul>
+  <li>a hash of the gadget's settings, and the Atlassian account ID of the user who loaded it
+      (so two people on the same dashboard never see each other's cache entry)</li>
+  <li>the numbers that make up the chart: daily counts of items in scope, items delivered,
+      items remaining, and the weekly throughput counts</li>
+  <li>counters for items that could not be classified, and — only when some items fell into
+      that case — <strong>up to five issue keys</strong>, so the chart can name them instead of
+      silently dropping them</li>
+</ul>
+<p>No summaries, descriptions, comments, or field values are stored. The cache lives in Atlassian
+Forge hosted storage, which is hosted by Atlassian, not by us.</p>
+
+<h2>3. What the app does not do</h2>
+<ul>
+  <li>It does not send any data to us or to any third party. The app makes
+      <strong>zero outbound network requests</strong> — the only host it talks to is your own
+      Atlassian site, through the Atlassian-provided API.</li>
+  <li>It does not use analytics, telemetry, crash reporting, or advertising SDKs.</li>
+  <li>It does not create, modify, or delete anything in Jira. It is read-only.</li>
+  <li>It does not read or store Atlassian account credentials, API tokens, or passwords.</li>
+</ul>
+
+<h2>4. Sub-processors</h2>
+<p>None. There is no third-party sub-processor, because there is no third-party data flow.</p>
+
+<h2>5. Retention and deletion</h2>
+<p>Cached records expire one hour after they are written and are then ignored. Uninstalling the
+app removes the app's Forge storage. To have a cache entry removed sooner, uninstall and
+reinstall the app, or contact us at the address below.</p>
+
+<h2>6. Data residency</h2>
+<p>The app runs on Atlassian Forge and stores data in Atlassian Forge hosted storage in the
+region Atlassian assigns to your product. We do not choose or move that region, and because
+there is no egress there is no cross-border transfer by us.</p>
+
+<h2>7. Your rights</h2>
+<p>Because the app stores no personal data beyond a cache keyed to your Atlassian account ID,
+the practical way to exercise a deletion request is to uninstall the app, which clears its
+storage. If you need something specific, write to us and we will tell you exactly what is
+in the storage, or remove it.</p>
+
+<h2>8. Changes to this policy</h2>
+<p>If the app's behaviour changes, this page changes with it. The "last updated" date above is
+the date of the last change.</p>
+
+<h2>9. Contact</h2>
+<p><a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a></p>
+<footer>Burnline: Burnup &amp; Burndown with Forecast — a Jira dashboard gadget. <a href="./index.html">Home</a> ·
+<a href="./privacy.html">Privacy</a> · <a href="./support.html">Support</a> ·
+<a href="./documentation.html">Documentation</a> · <a href="./security.html">Security</a></footer>
+</main></body></html>
