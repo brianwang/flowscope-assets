@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — Gantt Timeline for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Privacy Policy</h1>
+<p class="sub"><strong>Gantt Timeline for Jira Dashboard</strong></p>
+<p class="sub">Last updated: 3 October 2026</p>
+
+<p>This app is a Jira dashboard gadget published on the Atlassian Marketplace by the
+Marketplace partner <strong>flowscope</strong> (referred to below as "we"). This page
+describes exactly what the app does with data. It is written to match the app's source code,
+not to describe a general policy.</p>
+
+<h2>1. What the app reads</h2>
+
+<p>The app reads Jira issues through the official Jira REST API, using the
+<code>read:jira-work</code> scope and nothing else. All requests are made
+<strong>as the user who is viewing the gadget</strong> — the app can only ever see the issues
+that the person looking at the dashboard is already allowed to see. It never uses an
+administrator identity and it cannot read anything a viewer could not read themselves.</p>
+
+<p>Specifically it reads, for issues matched by a JQL filter that a Jira administrator
+configures on the gadget:</p>
+
+<ul>
+  <li>the issue key (for example <code>ABC-123</code>)</li>
+  <li>the issue summary — the one-line title. It is needed because every row on the timeline is
+      labelled with it; without it the chart would be a list of anonymous keys</li>
+  <li>the issue's status (its name and its status category)</li>
+  <li>the two date fields the gadget is configured to read — its start date and its end date.
+      Which fields these are is chosen by the administrator, so they may be built-in fields
+      such as Due date or custom fields</li>
+  <li>the creation date and, where present, the resolution date, which are used as fallbacks
+      when the chosen date fields are empty</li>
+  <li>the field the rows are grouped by, if grouping is switched on (for example assignee,
+      fix version or a team field)</li>
+  <li>the original time estimate and time spent, where they are set, so that a bar can show
+      progress</li>
+</ul>
+
+<p>The app does <strong>not</strong> read issue descriptions, comments, attachments, worklogs,
+or any custom field other than the ones named above, and it does not read issue history
+(changelogs). It does not read user profile details, email addresses or account identifiers
+beyond the one described in section 2.</p>
+
+<h2>2. What the app stores</h2>
+
+<p>The app writes two short-lived cache records into <strong>Atlassian's own Forge app
+storage</strong>. That storage lives inside Atlassian's infrastructure and is provisioned for
+this app by Atlassian; <strong>we have no server of our own and no database of our own.</strong></p>
+
+<table>
+<tr><th>What</th><th>Detail</th></tr>
+<tr><td>Chart cache key</td><td>Includes the <strong>Atlassian account ID</strong> of the user
+who loaded the gadget, together with a short hash of the gadget's configuration</td></tr>
+<tr><td>Chart cache value</td><td>The computed result only: for each plotted issue its key, its
+summary, its dates, its status name, the group it fell into, and derived numbers such as
+whether it is overdue and its progress fraction — plus the counts of excluded items</td></tr>
+<tr><td>Chart cache lifetime</td><td><strong>1 hour.</strong> Overwritten on the next load and
+never archived or copied elsewhere</td></tr>
+<tr><td>Field list cache</td><td>The list of field names and ids available in your Jira
+instance. <strong>Not keyed by user</strong> — it contains no personal data and no issue data.
+Lifetime <strong>24 hours</strong></td></tr>
+</table>
+
+<div class="note">
+<strong>Why the account ID is in the key.</strong> Because the app reads Jira as the viewing
+user, two different people looking at the same gadget can legitimately see two different sets of
+issues. The cache is therefore keyed per user, so that one person's cached result is never
+served to another. Removing the account ID from the key would create a risk of showing one
+user data derived from another user's permissions, so it is kept deliberately.
+</div>
+
+<p>An Atlassian account ID is a pseudonymous identifier. The app never resolves it to a name,
+an email address, or any other profile information, and it is never transmitted anywhere.</p>
+
+<h2>3. What the app does <em>not</em> do</h2>
+
+<p>This is the part that matters most, and every line of it is verifiable in the app's
+manifest and source:</p>
+
+<ul>
+  <li><strong>No external servers.</strong> The app makes no network requests to any host other
+  than Atlassian's own Jira REST API. There is no egress, no webhook, no callback URL, and no
+  third-party integration of any kind.</li>
+  <li><strong>No analytics or telemetry.</strong> No usage tracking, no error reporting service,
+  no cookies, no fingerprinting.</li>
+  <li><strong>No advertising.</strong> No ad networks, no trackers, no profiling.</li>
+  <li><strong>No selling or sharing.</strong> We do not sell, rent, or share any data with anyone.
+  There is nowhere for it to be shared <em>to</em>.</li>
+  <li><strong>No AI or machine-learning processing.</strong> No data is sent to any model or
+  inference service.</li>
+  <li><strong>No data outside Atlassian.</strong> All processing happens inside Atlassian's Forge
+  runtime, in the region your Jira instance is pinned to.</li>
+  <li><strong>No writing.</strong> The app never creates, edits, transitions or deletes
+  anything in Jira. The chart is read-only.</li>
+</ul>
+
+<h2>4. Sub-processors</h2>
+
+<p><strong>None.</strong> Atlassian provides the platform (Forge runtime and storage) under your
+own agreement with Atlassian. Beyond Atlassian, no other company processes any data on our
+behalf.</p>
+
+<h2>5. Retention and deletion</h2>
+
+<ul>
+  <li>Cache entries expire after 1 hour (chart) or 24 hours (field list) and are overwritten in
+  normal use.</li>
+  <li><strong>Uninstalling the app removes its Forge storage</strong>, including any cache entry
+  that has not yet expired. Atlassian removes app storage on uninstall.</li>
+  <li>We hold no separate copy of anything, so there is nothing else for us to delete.</li>
+</ul>
+
+<h2>6. Your rights</h2>
+
+<p>Because the app stores nothing outside Atlassian and keeps data for at most a day, a data
+subject request is normally satisfied by removing the app from the site (which clears its
+storage) or simply by waiting for the cache to expire. If you need something specific, contact
+your Jira administrator first — they control the installation — and you may also contact us at
+the address below.</p>
+
+<h2>7. Changes to this policy</h2>
+
+<p>If the app's data handling changes, this page changes with it, and the "Last updated" date
+above changes. The app's listing on the Atlassian Marketplace links to this page.</p>
+
+<h2>8. Contact</h2>
+
+<p>Questions about this policy, or about the app's data handling:
+<a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.
+See also the <a href="./support.html">support page</a>.</p>
+
+<footer>
+Gantt Timeline for Jira Dashboard — Atlassian Marketplace partner flowscope.
+This policy describes the app only; your use of Jira itself is governed by your agreement
+with Atlassian.
+</footer>
+
+</main></body></html>

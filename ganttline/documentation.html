@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — Gantt Timeline for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul,ol{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Documentation</h1>
+<p class="sub"><strong>Gantt Timeline for Jira Dashboard</strong></p>
+<p class="sub">Last updated: 3 October 2026</p>
+
+<p>This page covers everything the app does. It is written to match the app's behaviour,
+including the parts that are unflattering — where the numbers can mislead, this page says so.</p>
+
+<h2>1. What the app does</h2>
+
+<p>It is a Jira dashboard gadget that draws a <strong>read-only Gantt timeline</strong>. You give
+it a JQL filter. Each matching work item becomes one horizontal bar on a shared date axis, with
+its key and summary on the left. The app does not write anything back to Jira: no dragging, no
+dependency lines, no rescheduling.</p>
+
+What it draws:
+
+<ul>
+  <li><strong>a bar per work item</strong>, from its start date to its end date</li>
+  <li><strong>progress inside the bar</strong>, from time spent against the original estimate
+      where both are set, and fully filled when the item is done</li>
+  <li><strong>swimlanes</strong>, if you group rows by a field — Epic, version, assignee, team,
+      or any other field your instance has</li>
+  <li><strong>a dashed "today" line</strong>, so that "overdue" is readable as a distance and
+      not just a colour</li>
+  <li><strong>an overdue marker</strong> on bars whose end date has passed while the item is
+      still open</li>
+</ul>
+
+<h2>2. Requirements</h2>
+
+<ul>
+  <li>Jira Cloud.</li>
+  <li>A dashboard you can edit.</li>
+  <li>A JQL filter, and a decision about which of your fields hold the start and end dates.</li>
+</ul>
+
+<h2>3. Add the gadget to a dashboard</h2>
+
+<ol>
+  <li>Open a Jira dashboard and choose <strong>Edit</strong>.</li>
+  <li>Choose <strong>Add gadget</strong> and search for <em>Gantt Timeline</em>.</li>
+  <li>Add it, then open its configuration (the gadget's menu → <strong>Configure</strong>).</li>
+  <li>Fill in the four settings below and choose <strong>Save</strong>.</li>
+</ol>
+
+<h2>4. Settings</h2>
+
+<h3>JQL filter</h3>
+<p>Which issues appear on the timeline. Unlike an "in progress" chart, this one includes
+finished items as well — the point of a Gantt view is the gap between planned and actual dates,
+and completed work is half of that comparison.</p>
+
+<p>If you paste a filter that already ends with <code>ORDER BY</code> (which is what Jira's own
+issue search gives you), that is accepted: the app strips it and applies its own ordering. It
+does this so that truncation behaves predictably — see section 7.</p>
+
+<h3>Start date field and End date field</h3>
+<p>The two fields the bars are drawn from. <strong>There is no single correct answer</strong> —
+it depends on your instance. Jira Software has a built-in <em>Start date</em>, some
+organisations add their own <em>Target start</em> / <em>Target end</em> fields, and many teams
+simply use <em>Due date</em> as the end. The gadget lists the date fields your instance actually
+has and saves your choice by <strong>field ID</strong>, so renaming a field or switching Jira's
+display language does not break an existing gadget.</p>
+
+<h3>Fall back to the creation date when the start date is empty</h3>
+<p>On by default. When an item has no start date, its creation date is used instead so the bar
+can still be drawn — but those bars are drawn <strong>dashed</strong> and the count is shown under
+the chart, because a borrowed date is not the same thing as a planned one. Turn it off and those
+items are excluded and counted instead.</p>
+
+<h3>Group rows by</h3>
+<p>Optional. Groups the rows into swimlanes by any field. Swimlanes are ordered by the earliest
+start date in them, and rows whose grouping field is empty go into a lane of their own at the
+bottom.</p>
+
+<h2>5. Where the dates come from, and where they don't</h2>
+
+<div class="note">
+The app never guesses a date silently. Every row is either drawn from the field you picked, or
+from a fallback that is <strong>marked on the chart</strong>, or excluded and
+<strong>counted</strong> under the chart.
+</div>
+
+<table>
+<tr><th>Situation</th><th>What the app does</th></tr>
+<tr><td>Start date is set</td><td>The bar starts there</td></tr>
+<tr><td>Start date is empty, fallback on</td><td>The bar starts at the creation date and is
+drawn <strong>dashed</strong></td></tr>
+<tr><td>Start date is empty, fallback off</td><td>The row is <strong>excluded</strong> and
+counted as <code>no start date</code></td></tr>
+<tr><td>End date is set</td><td>The bar ends there</td></tr>
+<tr><td>End date is empty and the item is finished</td><td>The bar ends at the resolution date
+and is drawn <strong>dashed</strong></td></tr>
+<tr><td>End date is empty and the item is unfinished</td><td>The row is <strong>excluded</strong>
+and counted as <code>no end date</code>. An open item's end date is not invented</td></tr>
+<tr><td>End is before start</td><td>The row is still drawn, and the two fields disagreeing is
+called out in the row's tooltip rather than silently swapped</td></tr>
+</table>
+
+<p>An item counts as finished if either its status category is Done <em>or</em> it has a
+resolution date. Both are checked because custom workflows do not always set both.</p>
+
+<h2>6. What "progress" means</h2>
+
+<p>When time spent and an original estimate are both filled in, the filled portion of the bar is
+their ratio. When the item is done, the bar is filled completely. When neither value is set, the
+bar shows <strong>no progress at all</strong> — the app does not invent a percentage from a
+status name, because two teams' "In Progress" mean different things and a fabricated number is
+worse than an absent one.</p>
+
+<h2>7. Two limits, and why they are stated on screen</h2>
+
+<ul>
+  <li><strong>60 rows are drawn.</strong> Rows are taken in start-date order, so the timeline
+      reads left to right; the chart says how many were not drawn.</li>
+  <li><strong>The query stops after a fixed number of pages</strong> (2,000 issues). Because the
+      query is ordered by creation date before that cut, the items dropped are the
+      <em>newest</em>, not the oldest. When it happens, the chart says so.</li>
+</ul>
+
+<p>Both are reported on screen. A silent cap would make a partial timeline look like a complete
+one, which is the failure mode this app is most careful about.</p>
+
+<h2>8. Languages</h2>
+
+<p>The gadget interface is available in <strong>English</strong> and <strong>Chinese
+(Simplified)</strong>. Field names are shown as your Jira displays them, with the English name
+added in brackets when it differs — several fields in one instance often have similar localised
+names.</p>
+
+<h2>9. Data and privacy</h2>
+
+<p>The app reads issues through the Jira REST API using a read-only scope. It does not send data
+to any external service, and it has no third-party integrations. The full description of what is
+read, what is stored and where is in the <a href="./privacy.html">privacy policy</a>.</p>
+
+<h2>10. Support</h2>
+
+<p>Questions, bug reports and feature requests: see the
+<a href="./support.html">support page</a>, or email
+<a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.</p>
+
+<footer>
+Gantt Timeline for Jira Dashboard — an app on the Atlassian Marketplace.
+See also the <a href="./privacy.html">privacy policy</a> and the
+<a href="./support.html">support page</a>.
+</footer>
+
+</main></body></html>

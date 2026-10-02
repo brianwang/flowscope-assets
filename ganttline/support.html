@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — Gantt Timeline for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Support</h1>
+<p class="sub"><strong>Gantt Timeline for Jira Dashboard</strong></p>
+
+<h2>Contact</h2>
+<p>Email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> and include the
+details below. This is a small app maintained by one person; replies are best-effort
+and there is no guaranteed response time.</p>
+
+<h2>What to include</h2>
+<p>These four things let most problems be diagnosed from the first message:</p>
+<ul>
+  <li>Your Jira site URL (for example <code>yourcompany.atlassian.net</code>)</li>
+  <li>The gadget's configuration: the JQL filter, which field you picked as the start date and
+  which as the end date, and the grouping field</li>
+  <li>Whether your Jira interface is in a language other than English</li>
+  <li>What you expected to see and what you saw instead — a screenshot helps a lot</li>
+</ul>
+
+<h2>Common questions</h2>
+
+<p><strong>The timeline is empty, but my filter matches issues.</strong><br>
+The chart needs <em>both</em> a start date and an end date on an issue before it can draw a row.
+An issue with a due date but no start date, and with the creation-date fallback switched off,
+cannot be plotted. The gadget tells you which of the two is missing and how many items were
+affected — it never quietly drops a row.</p>
+
+<p><strong>Some bars are drawn dashed.</strong><br>
+A dashed bar means part of its date range came from a fallback rather than from the field you
+picked — usually the creation date standing in for a missing start date, or the resolution date
+standing in for a missing end date. The count is shown under the chart. Turning off the
+creation-date fallback in the gadget settings removes them.</p>
+
+<p><strong>Which field should I pick as the start date?</strong><br>
+Whichever field your team actually fills in. Jira has no single "start date" field — it depends
+on your instance, on whether you use Jira Software's built-in Start date, or a custom field your
+organisation added. The gadget lists the date fields your instance actually has, and saves the
+selection by field ID, so renaming a field or switching the Jira display language does not break
+it.</p>
+
+<p><strong>A bar is red / orange and the end is in the past.</strong><br>
+That is the overdue marker: the end date has passed and the item is not finished. It says
+nothing about why.</p>
+
+<p><strong>There are more rows than are shown.</strong><br>
+Only the first 60 rows are drawn, taken in start-date order, and the chart says so when it
+happens. Narrow the JQL filter to see more of the timeline at once.</p>
+
+<p><strong>Pick a smaller date range and the chart gets truncated.</strong><br>
+The query stops after a fixed number of pages and says so. Because rows are ordered by creation
+date before that cut, the items dropped are the newest ones — not the oldest, which are usually
+the ones you were looking for.</p>
+
+<h2>Privacy</h2>
+<p>What the app reads and stores is documented in the
+<a href="./privacy.html">privacy policy</a>. In short: it reads Jira issues as you, stores a
+one-hour cache inside Atlassian's own storage, and sends nothing to any external service.</p>
+
+<footer>
+Gantt Timeline for Jira Dashboard — Atlassian Marketplace partner flowscope.
+</footer>
+
+</main></body></html>
