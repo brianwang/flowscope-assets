@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy — Worklog Coverage for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Privacy</h1>
+<p class="sub"><strong>Worklog Coverage for Jira</strong></p>
+
+<h2>What the app reads</h2>
+<p>It reads Jira work item data through Jira's own REST API, <strong>as the user viewing the
+gadget</strong> (<code>read:jira-work</code>). That means it can only ever see work items that
+the viewing user can already see in Jira. The fields it reads are:</p>
+<ul>
+  <li>work item key and summary</li>
+  <li>assignee</li>
+  <li>time spent (<code>timespent</code>)</li>
+  <li>status category</li>
+  <li>resolution date</li>
+</ul>
+<p>It is read-only. It does not create, edit, transition, comment on, or delete anything, and it
+does not write worklogs.</p>
+
+<h2>Where data goes</h2>
+<p><strong>Nowhere outside Atlassian.</strong> The app makes no network requests to any host other
+than your own Jira site's REST API. There is no third-party analytics, no telemetry, no external
+logging service, and no external database.</p>
+
+<h2>What is stored</h2>
+<p>The app keeps a short-lived cache of the <em>computed result</em> (coverage counts, per-assignee
+totals, a list of work item keys) in Atlassian-hosted Forge storage. The cache:</p>
+<ul>
+  <li>expires after 1 hour;</li>
+  <li>is keyed by the viewing user's account ID, so one user's cached result is never served to
+  another;</li>
+  <li>holds counts and work item keys only — no work item descriptions, comments, or attachments.</li>
+</ul>
+<p>If the cache write fails, the app still works and simply re-reads Jira each time.</p>
+
+<h2>Data retention</h2>
+<p>Nothing is retained beyond that 1-hour cache. Uninstalling the app removes it. The app has no
+way to export data and no separate data store of its own.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy: <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.</p>
+<footer>Worklog Coverage for Jira — a Forge app for Jira Cloud. Built on Atlassian Forge; runs entirely on Atlassian infrastructure.</footer>
+</main></body></html>

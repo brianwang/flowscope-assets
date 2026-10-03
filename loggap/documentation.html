@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — Worklog Coverage for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Documentation</h1>
+<p class="sub"><strong>Worklog Coverage for Jira</strong> — a read-only Jira dashboard gadget</p>
+
+<h2>What it answers</h2>
+<p>Of the work items your team <em>completed</em> in the last N days, how many have no time logged
+against them — and whose items are they?</p>
+<p>It does not tell you <em>how many hours</em> were logged. It tells you whether time tracking is
+happening at all on the work you finished.</p>
+
+<h2>Setting it up</h2>
+<ol>
+  <li>Add the gadget to a Jira dashboard.</li>
+  <li>Open its settings and enter a <strong>JQL filter</strong> for the scope you care about, for
+  example <code>project = ABC</code> or <code>project in (ABC, DEF) AND issuetype != Sub-task</code>.</li>
+  <li>Set the <strong>window</strong> — how many days back to look for completed items. 30 is a
+  reasonable start.</li>
+  <li>Press <strong>Preview counts</strong> before saving. It shows how many completed items match
+  and how many already have no logged time. If the total is 0, your filter or window is wrong.</li>
+</ol>
+
+<h2>What the app adds to your filter</h2>
+<p>Your JQL is only the scope. The app always appends two conditions:</p>
+<ul>
+  <li><code>statusCategory = Done</code> — only completed work is counted</li>
+  <li><code>resolved &gt;= -Nd</code> — completed within the window</li>
+</ul>
+<p>So you cannot use this gadget to ask about work in progress. That is deliberate: work that is
+not finished yet has no reason to have time logged against it, and counting it would make the
+number meaningless.</p>
+
+<h2>Reading the numbers</h2>
+<ul>
+  <li><strong>Coverage %</strong> — completed items with any logged time, divided by all completed
+  items in scope. The denominator is always shown next to it. With fewer than 10 items the
+  percentage is a hint, not a measurement, and the gadget says so.</li>
+  <li><strong>The bars</strong> — per assignee. Green is items with logged time, amber is items
+  without. Note that <code>timespent</code> is the <em>whole item's</em> total across everyone who
+  logged against it, so "Ann's coverage" means "of the items assigned to Ann, how many have any
+  time logged" — not "how much time Ann logged". A tester logging onto someone else's item counts
+  there.</li>
+  <li><strong>The gap list</strong> — the most recently completed items with no logged time, newest
+  first, because those are the ones still worth chasing. The full JQL for the list is shown under
+  it; paste it into Jira's issue search, or wire it into your own automation.</li>
+</ul>
+
+<h2>Limits worth knowing</h2>
+<ul>
+  <li>At most 2,000 completed items are scanned, newest first. When that limit is hit the gadget
+  says so: older completions were not counted. Because recent items are more likely to have time
+  logged, a truncated result tends to look <em>better</em> than reality.</li>
+  <li>Results are cached for up to 1 hour.</li>
+  <li>Sub-tasks are included or excluded according to your JQL — add
+  <code>issuetype != Sub-task</code> if you do not want them.</li>
+  <li>The gadget reads only what the signed-in user can see, so two people may see different
+  numbers on the same dashboard.</li>
+</ul>
+
+<footer>Worklog Coverage for Jira — a Forge app for Jira Cloud. Built on Atlassian Forge; runs entirely on Atlassian infrastructure.</footer>
+</main></body></html>

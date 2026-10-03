@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — Worklog Coverage for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Support</h1>
+<p class="sub"><strong>Worklog Coverage for Jira</strong></p>
+
+<h2>Contact</h2>
+<p>Email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> with the details below.
+This is a small app maintained by one person; replies are best-effort and there is no guaranteed
+response time.</p>
+
+<h2>What to include</h2>
+<ul>
+  <li>Your Jira site URL (for example <code>yourcompany.atlassian.net</code>)</li>
+  <li>The gadget's configuration: the JQL filter and the window in days</li>
+  <li>What you expected to see and what you saw instead — a screenshot helps a lot</li>
+</ul>
+<p>Please do not send API tokens or any other credentials.</p>
+
+<h2>Common questions</h2>
+<ul>
+  <li><strong>The gadget says "no work items were completed".</strong> The app always adds
+  <code>statusCategory = Done</code> and a resolution-date window to your filter. If your projects
+  do not resolve work items — or nothing was completed in that window — the result is genuinely
+  empty. Try a wider window.</li>
+  <li><strong>Coverage looks lower than expected.</strong> Coverage counts work items, not hours.
+  An item counts as logged as soon as anyone has logged any time against it. If only some of your
+  projects use Jira's time tracking, include only those projects in the filter — otherwise the
+  projects that never log time will pull the number down.</li>
+  <li><strong>The number changes when I refresh.</strong> Results are cached for up to 1 hour.</li>
+</ul>
+<footer>Worklog Coverage for Jira — a Forge app for Jira Cloud. Built on Atlassian Forge; runs entirely on Atlassian infrastructure.</footer>
+</main></body></html>
