@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — LaTeX Math and Equations for Confluence</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul,ol{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+pre{background:var(--code);padding:12px 14px;border-radius:3px;overflow:auto;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.5}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Documentation</h1>
+<p class="sub"><strong>LaTeX Math and Equations for Confluence</strong></p>
+<p class="sub">Last updated: 4 October 2026</p>
+
+<h2>Adding a formula</h2>
+
+<ol>
+  <li>In the Confluence editor, type <code>/latex</code> and pick <strong>LaTeX Math</strong>.</li>
+  <li>A configuration panel opens with a live preview. Pick a starter template or paste your own
+      LaTeX on the left; the typeset result appears on the right as you type.</li>
+  <li>Save. The panel closes and the typeset formula appears in the page.</li>
+</ol>
+
+<p>To change a formula later, edit the macro — the panel reopens with your existing source in it.
+The starter templates are only pre-filled when you insert a new macro, so editing can never
+overwrite what you already wrote.</p>
+
+<h2>Writing LaTeX</h2>
+
+<p>The macro understands the usual LaTeX maths delimiters:</p>
+
+<table>
+  <tr><th>Delimiters</th><th>Result</th></tr>
+  <tr><td><code>$…$</code> · <code>\(…\)</code></td><td>Inline — sits in the line of text</td></tr>
+  <tr><td><code>$$…$$</code> · <code>\[…\]</code></td><td>Display — on a line of its own, centred</td></tr>
+</table>
+
+<p>A display formula:</p>
+
+<pre>$$
+\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+$$</pre>
+
+<p>Everything in one macro is typeset together, so text and maths can share it. This whole block
+is one macro, and only the part in <code>$…$</code> is typeset:</p>
+
+<pre>Euler's identity $e^{i\pi} + 1 = 0$ follows from the exponential series.</pre>
+
+<p>You do not have to add delimiters at all. If the source contains no delimiters it is treated as
+a single formula — a single line is typeset inline, several lines (or a <code>\begin{…}</code>
+environment) are typeset as display.</p>
+
+<h3>Starter templates</h3>
+
+<table>
+  <tr><th>Template</th><th>Shows</th></tr>
+  <tr><td>Display formula</td><td>An integral with limits, a fraction and a square root, between <code>$$…$$</code>.</td></tr>
+  <tr><td>Inline in a sentence</td><td>Text and an inline formula in the same macro.</td></tr>
+  <tr><td>Aligned equations</td><td>A multi-line <code>\begin{align}</code> block with <code>&amp;</code> alignment.</td></tr>
+  <tr><td>Matrix</td><td>A <code>pmatrix</code> with a stretchy pair of parentheses.</td></tr>
+  <tr><td>Piecewise function</td><td>A <code>\begin{cases}</code> definition.</td></tr>
+</table>
+
+<h2>Pasting from somewhere else</h2>
+
+<p>Copying LaTeX out of a PDF, a Word document, a chat message or a Markdown file often brings
+invisible characters with it. The macro cleans up the common ones before typesetting: Windows
+line endings, non-breaking spaces, zero-width characters, and a surrounding
+<code>```latex</code> code fence. If your formula typesets after pasting but not before, that is
+usually why.</p>
+
+<h2>Errors</h2>
+
+<p>When the source cannot be typeset, the macro shows the line number, the offending line itself
+and a marker under the position where typesetting stopped, plus the library's original message if
+you want it. A single bad formula does not stop the rest of the macro — anything that can be
+typeset still is. Two messages mean something specific:</p>
+
+<ul>
+  <li><strong>Needs a line of its own</strong> — an <code>\begin{align}</code> (or similar)
+      environment was used inside <code>$…$</code>. Wrap it in <code>$$…$$</code> instead.</li>
+  <li><strong>Unknown command</strong> — the command does not exist in the bundled library,
+      usually a typo, or it comes from a LaTeX package that is not bundled.</li>
+</ul>
+
+<h2>Limits</h2>
+
+<ul>
+  <li>Up to 20,000 characters and 500 lines per macro.</li>
+  <li>Formulas are typeset, not exported — there is no PNG or SVG download in this version.</li>
+  <li>Commands that produce links or pull in external content are deliberately disabled
+      (<code>\href</code>, <code>\url</code>, <code>\includegraphics</code>,
+      <code>\htmlClass</code>); they are shown as text instead.</li>
+  <li>The macro typesets whatever the bundled library supports. LaTeX features released after
+      this app version will not be understood until the app is updated.</li>
+</ul>
+
+<footer>
+<p>LaTeX Math and Equations for Confluence — published by <strong>flowscope</strong> on the
+Atlassian Marketplace. See also the <a href="privacy.html">Privacy Policy</a>,
+<a href="security.html">Security</a>, <a href="support.html">Support</a> and
+<a href="documentation.html">Documentation</a>.</p>
+</footer>
+</main></body></html>
