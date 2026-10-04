@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security Policy — Issue Templates for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Security Policy</h1>
+<p class="sub"><strong>Issue Templates for Jira</strong></p>
+<p class="sub">Last updated: 5 October 2026</p>
+
+<p>This app is published on the Atlassian Marketplace by the partner <strong>flowscope</strong>.
+This page states how the app is built and what it can and cannot reach. It is written to match
+the app's source code and its Forge manifest, not to describe a general policy.</p>
+
+<h2>1. Where the code runs</h2>
+
+<table>
+  <tr><th>Component</th><th>Where it executes</th></tr>
+  <tr><td>Backend (resolver)</td>
+      <td>Atlassian Forge, on Atlassian's infrastructure (<code>nodejs22.x</code> runtime).
+          No partner-operated server is involved.</td></tr>
+  <tr><td>Frontend (the app's page)</td>
+      <td>The end user's browser, inside the Jira page. The template list and the form are drawn
+          there; no remote asset is loaded.</td></tr>
+</table>
+
+<p>There is no infrastructure operated by the publisher. The app has no server, no database and
+no hosting of its own, and it keeps no app storage.</p>
+
+<h2>2. Permissions and identity</h2>
+
+<p>The app requests exactly two OAuth scopes:</p>
+
+<ul>
+  <li><code>read:jira-work</code> — to read the projects you can file work in, and their issue
+  types, components and priorities.</li>
+  <li><code>write:jira-work</code> — to create the one issue you confirm. This app writes; a
+  read-only scope would make it do nothing.</li>
+</ul>
+
+<p>Every Jira request is made <strong>as the user who is using the app</strong>, using Forge's
+built-in OAuth. The app never uses an administrative identity, and it cannot create an issue
+that you could not have created yourself by hand. If you lack permission to create issues in a
+project, the app does not offer it — that list comes from Jira, not from us.</p>
+
+<div class="note">
+<strong>The app does not claim the "Runs on Atlassian" badge.</strong> That badge is for apps
+that run entirely on Atlassian's platform without egress and without extended data access. This
+app does declare no egress, but it requests a write scope — it creates issues — so it is outside
+what the badge covers, and it makes no claim to it. Where the app relies on Atlassian's own
+controls (infrastructure, OAuth, logging), those are described in Atlassian's documentation, not
+here.
+</div>
+
+<h2>3. Network access</h2>
+
+<p><strong>The app makes no outbound request to any host other than Jira's own REST API.</strong>
+There is no analytics, no telemetry, no crash reporting, no advertising SDK and no third-party
+service of any kind. Its Forge manifest declares no external egress domains, so it is structurally
+incapable of sending your data anywhere but Atlassian.</p>
+
+<h2>4. Secrets and credentials</h2>
+
+<p><strong>The app never asks for an Atlassian API token, a password, or any other credential.</strong>
+That includes <em>your</em> credentials and any third-party service's. Authorization is handled
+entirely by Atlassian's OAuth flow; the app stores no token and no secret, and there is nothing
+for a user or an administrator to generate, copy or paste.</p>
+
+<p>The app does not connect to any external system, so it does not collect credentials for one
+either.</p>
+
+<h2>5. What is read and written</h2>
+
+<p>What the app reads from Jira, exactly what it creates, what it stores (nothing) and what it
+logs are described in full in the <a href="privacy.html">Privacy Policy</a>. In summary: it reads
+the projects you can file work in and their issue types, components and priorities; it creates one
+issue when you press the button; it keeps no app storage; it writes one log line containing the
+created issue key, project key, the creator's account ID and the template used.</p>
+
+<h2>6. Input handling</h2>
+
+<ul>
+  <li><strong>The project key is validated before it is ever placed in a URL</strong>, against a
+  strict pattern, and every request path is required to begin with the Jira REST prefix. A
+  project key that does not match is refused rather than encoded and sent.</li>
+  <li><strong>Everything else travels in the request body</strong>, never in a URL.</li>
+  <li><strong>The server re-reads the project's schema before every creation</strong> and
+  recomputes the issue from it. A modified page cannot make the app send a field or a value the
+  project does not accept.</li>
+  <li><strong>No user input is rendered as HTML.</strong> The app's interface has no
+  <code>innerHTML</code> and no HTML injection path; what you type is text.</li>
+</ul>
+
+<h2>7. Data residency</h2>
+
+<p>The app processes data exclusively within Atlassian apps and services. It defines no data
+egress, so there is no external location for data to reside in.</p>
+
+<h2>8. Reporting a vulnerability</h2>
+
+<p>Please email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> with a description
+of the issue and, where possible, the steps to reproduce it. Please do not open a public issue
+for a security report.</p>
+
+<p>This is a small app maintained by one person. Reports are handled on a best-effort basis and
+there is no guaranteed response time and no bug bounty programme.</p>
+
+<h2>9. What this page does not claim</h2>
+
+<p>The app holds no security certification, no independent audit and no compliance attestation
+(for example SOC 2, ISO 27001 or a completed CAIQ). Nothing on this page should be read as
+claiming otherwise.</p>
+
+<footer>
+<p>Issue Templates for Jira — published by <strong>flowscope</strong> on the Atlassian
+Marketplace. See also the <a href="privacy.html">Privacy Policy</a>,
+<a href="support.html">Support</a> and <a href="documentation.html">Documentation</a>.</p>
+</footer>
+</main></body></html>

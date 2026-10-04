@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — Issue Templates for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Privacy Policy</h1>
+<p class="sub"><strong>Issue Templates for Jira</strong></p>
+<p class="sub">Last updated: 5 October 2026</p>
+
+<p>This app is published on the Atlassian Marketplace by the Marketplace partner
+<strong>flowscope</strong> (referred to below as "we"). This page describes exactly what the app
+does with data. It is written to match the app's source code, not to describe a general policy.</p>
+
+<div class="note">
+<strong>This app writes.</strong> Unlike a reporting gadget, it creates an issue in your Jira
+site — that is the whole point of it. It creates <strong>only the one issue you reviewed and
+confirmed</strong>, in a project you picked, when you press the create button. It never edits,
+transitions, deletes or bulk-creates anything, and nothing at all is created before you press
+that button.
+</div>
+
+<h2>1. What the app reads</h2>
+
+<p>All requests are made through the official Jira REST API <strong>as the user who is using the
+app</strong>, using the <code>read:jira-work</code> scope. The app can only ever see what the
+person using it is already allowed to see; it never uses an administrator identity and it cannot
+gain access to anything on its own.</p>
+
+<ul>
+  <li><strong>Your projects.</strong> It asks Jira for the projects in which <em>you</em> are
+  allowed to create issues, and shows you that list. It does not request the projects you cannot
+  file work in.</li>
+  <li><strong>The issue types, components and priorities of the project you select.</strong>
+  This is what lets the app offer only the templates and values that project actually accepts.</li>
+</ul>
+
+<p>That is the entire read. The app does <strong>not</strong> read issue descriptions, comments,
+attachments, worklogs, issue history, or user profiles. It does not read any other issue in your
+site, and it does not read any other project.</p>
+
+<h2>2. What the app writes</h2>
+
+<p>When — and only when — you press the create button, the app creates one issue containing:</p>
+
+<table>
+<tr><th>Field</th><th>Where the value comes from</th></tr>
+<tr><td>Project</td><td>The project you selected</td></tr>
+<tr><td>Issue type</td><td>The template's issue type, or the one you changed it to</td></tr>
+<tr><td>Summary</td><td>The template's summary, as you edited it</td></tr>
+<tr><td>Description</td><td>The template's text, as you edited it, converted to Jira's document
+format</td></tr>
+<tr><td>Labels, components, priority</td><td>The template's defaults and your edits —
+<strong>only</strong> values the project itself offers</td></tr>
+</table>
+
+<p>The issue is then an ordinary Jira issue. It is visible to whoever the project's permission
+scheme allows, exactly like an issue you created by hand, and it is deleted, archived or moved
+by the same means as any other issue. We keep no copy of it.</p>
+
+<h2>3. What the app stores</h2>
+
+<p><strong>Nothing.</strong> The app keeps no database, no cache and no per-user record. It uses
+no app storage at all: every action reads what it needs from Jira at that moment, and the result
+lives only in the open page in your browser.</p>
+
+<p>There is no state to expire, no cache to clear, and nothing left behind after you close the
+tab. <strong>Uninstalling the app therefore has nothing to delete</strong> beyond the listing of
+the app itself.</p>
+
+<h2>4. Logs</h2>
+
+<p>On a successful creation the app writes a single line to the Forge runtime log, which is
+hosted and retained by Atlassian like any other Forge app's log. That line records the
+<strong>issue key</strong> that was created, the <strong>project key</strong>, the
+<strong>Atlassian account ID of the person who created it</strong>, which template was used, and
+how many fields had to be adjusted. It is used to diagnose failed or unexpected creations.</p>
+
+<p>It does <strong>not</strong> record the summary, the description, or any other content of the
+issue — only the identifiers needed to find it. No log is sent to us or to anyone else; it stays
+in Atlassian's log for the app.</p>
+
+<h2>5. What the app does <em>not</em> do</h2>
+
+<ul>
+  <li><strong>No external servers.</strong> The app makes no network request to any host other
+  than Atlassian's own Jira REST API. There is no egress, no webhook, no callback URL and no
+  third-party integration of any kind.</li>
+  <li><strong>No analytics or telemetry.</strong> No usage tracking, no error-reporting service,
+  no cookies, no fingerprinting.</li>
+  <li><strong>No advertising.</strong> No ad networks, no trackers, no profiling.</li>
+  <li><strong>No selling or sharing.</strong> We do not sell, rent or share any data with
+  anyone. There is nowhere for it to be shared <em>to</em>.</li>
+  <li><strong>No AI or machine-learning processing.</strong> No data is sent to any model or
+  inference service. The templates are fixed text stored in the app; they are not generated.</li>
+  <li><strong>No data outside Atlassian.</strong> All processing happens inside Atlassian's Forge
+  runtime, in the region your Jira instance is pinned to. The only thing written outside Forge
+  is the Jira issue itself, inside your own Jira site.</li>
+  <li><strong>No deletion or modification.</strong> The app creates issues. It never edits,
+  transitions or deletes an issue, and it never creates more than the one you confirmed.</li>
+</ul>
+
+<h2>6. Sub-processors</h2>
+
+<p><strong>None.</strong> Atlassian provides the platform (Forge runtime and logs) under your own
+agreement with Atlassian. Beyond Atlassian, no other company processes any data on our behalf.</p>
+
+<h2>7. Retention and deletion</h2>
+
+<ul>
+  <li>The app stores nothing, so there is nothing of ours to expire.</li>
+  <li>Issues it created are ordinary Jira issues and follow your own retention rules. Deleting
+  one is a normal Jira delete and requires no involvement from us.</li>
+  <li>The log line described in section 4 is retained by Atlassian under the same terms as other
+  Forge app logs.</li>
+</ul>
+
+<h2>8. Your rights</h2>
+
+<p>Because the app holds no data of its own, a data-subject request is normally satisfied by
+deleting the issue (if you want the issue gone) or by uninstalling the app (if you want the log
+purge to stop accumulating). If you need something specific, contact your Jira administrator
+first — they control the installation — and you may also contact us at the address below.</p>
+
+<h2>9. Changes to this policy</h2>
+
+<p>If the app's data handling changes, this page changes with it, and the "Last updated" date
+above changes. The app's listing on the Atlassian Marketplace links to this page.</p>
+
+<h2>10. Contact</h2>
+
+<p>Questions about this policy, or about the app's data handling:
+<a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.
+See also the <a href="./support.html">support page</a>.</p>
+
+<footer>
+Issue Templates for Jira — Atlassian Marketplace partner flowscope.
+This policy describes the app only; your use of Jira itself is governed by your agreement
+with Atlassian.
+</footer>
+
+</main></body></html>

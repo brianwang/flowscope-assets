@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — Issue Templates for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Support</h1>
+<p class="sub"><strong>Issue Templates for Jira</strong></p>
+
+<h2>Contact</h2>
+<p>Email <a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a> and include the details
+below. This is a small app maintained by one person; replies are best-effort and there is no
+guaranteed response time.</p>
+
+<h2>What to include</h2>
+<p>These four things let most problems be diagnosed from the first message:</p>
+<ul>
+  <li>Your Jira site URL (for example <code>yourcompany.atlassian.net</code>)</li>
+  <li>The project key you were creating in, the template you picked, and the issue key that was
+  created (it appears on the confirmation, and it is also in the app's log line)</li>
+  <li>Whether your Jira interface is in a language other than English</li>
+  <li>What you expected to see and what you saw instead — a screenshot helps a lot</li>
+</ul>
+
+<h2>Common questions</h2>
+
+<p><strong>A template is missing from the list.</strong><br>
+Templates are matched to the issue types the selected project can actually create. If a project
+has no Bug issue type, the Bug template is hidden — and the app tells you how many templates were
+hidden and why, rather than showing a template that would fail when you pressed the button. If
+you think a template should be there, check the project's issue types first.</p>
+
+<p><strong>I changed the issue type and the description no longer fits.</strong><br>
+That is allowed on purpose, and the app warns you when the issue type differs from the one the
+template was written for. The description is created exactly as written — the app does not
+silently rewrite it for the new type.</p>
+
+<p><strong>My priority was not set.</strong><br>
+Priorities are per-site and often localised, so the app only offers the ones your project
+actually has. If the template's default priority does not exist in your project, the app leaves
+the priority at the project default and tells you — it never guesses a substitute.</p>
+
+<p><strong>My label came out with dashes in it.</strong><br>
+Jira labels cannot contain spaces, so <code>needs triage</code> is created as
+<code>needs-triage</code>. The app says so on the confirmation rather than changing it quietly.
+Duplicate labels are dropped, also with a note.</p>
+
+<p><strong>A component I typed was not applied.</strong><br>
+Only components that exist in the selected project can be set. Anything else is dropped and
+listed on the confirmation. This is deliberate: inventing a component would either fail the
+creation or attach your issue to the wrong thing.</p>
+
+<p><strong>My summary was shortened.</strong><br>
+Jira caps a summary at 255 characters. The app cuts it to fit and tells you it did. It also puts
+the summary on one line, because Jira does not accept line breaks there.</p>
+
+<p><strong>Nothing happened when I pressed create.</strong><br>
+Nothing is created until the request succeeds, so a failure leaves nothing behind — there is no
+half-made issue to clean up. The page shows the reason Jira gave. The most common causes are not
+having permission to create in that project, or the project no longer accepting that issue type.</p>
+
+<p><strong>Two people pressed create at the same time.</strong><br>
+The app does not de-duplicate. If you need one issue per report, that is still a human decision —
+the app creates exactly what you confirm, once per press. There is no automatic retry and no
+background job, so a double press creates two issues.</p>
+
+<p><strong>Who can install this?</strong><br>
+A Jira administrator installs it for the site. Because the app acts as the person using it, it
+cannot do anything an individual user could not do themselves — installing it does not grant
+anyone new access to any project.</p>
+
+<h2>Privacy and security</h2>
+<p>What the app reads, what it creates, and the fact that it stores nothing are documented in the
+<a href="./privacy.html">privacy policy</a>; how it is built and which scopes it asks for are on
+the <a href="./security.html">security page</a>. In short: it reads the projects you can file
+work in, it creates the one issue you confirm, it keeps no app storage, and it sends nothing to
+any external service.</p>
+
+<footer>
+Issue Templates for Jira — Atlassian Marketplace partner flowscope.
+</footer>
+
+</main></body></html>

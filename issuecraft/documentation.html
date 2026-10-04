@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentation — Issue Templates for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul,ol{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+pre{background:var(--code);padding:12px 14px;border-radius:4px;overflow-x:auto;font-size:13px;
+ line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Documentation</h1>
+<p class="sub"><strong>Issue Templates for Jira</strong></p>
+<p class="sub">Last updated: 5 October 2026</p>
+
+<p>This page covers everything the app does. It is written to match the app's behaviour,
+including the parts that are unflattering — where the app changes something you typed, this page
+says so, and the app says so on screen too.</p>
+
+<h2>1. What the app does</h2>
+
+<p>It is a Jira app that turns filing work into picking a template. You choose a project, pick a
+template, adjust what you need, and create the issue. The <strong>issue type, summary,
+description, labels and components</strong> come from the template, so everyone on the team files
+work the same way.</p>
+
+<p>The app opens as a full page under <strong>Apps</strong> in Jira. It creates one issue per
+press of the button: <strong>nothing is created until you press it</strong>, and there is no
+bulk mode and no scheduled action.</p>
+
+<h2>2. Requirements</h2>
+
+<ul>
+  <li>Jira Cloud.</li>
+  <li>Permission to create issues in the project you want to file against — the app only lists
+  the projects where you have it.</li>
+  <li>Nothing else. There is nothing to configure, no field mapping to set up and no
+  administrator step beyond installing the app.</li>
+</ul>
+
+<h2>3. Using it</h2>
+
+<ol>
+  <li>Open <strong>Apps → Issue Templates</strong>.</li>
+  <li>Pick a project. The app reads that project's issue types, components and priorities.</li>
+  <li>Pick a template from the list on the left. Templates that this project cannot create are
+  <strong>hidden, with a count and the reason</strong> — see section 5.</li>
+  <li>Adjust the issue type, summary, description, labels, priority and components if you need to.</li>
+  <li>Press <strong>Create issue</strong>. The confirmation shows the issue key and a link to it.</li>
+</ol>
+
+<h2>4. The built-in templates</h2>
+
+<table>
+<tr><th>Template</th><th>Issue type</th><th>Default labels</th><th>Default priority</th></tr>
+<tr><td>Bug report</td><td>Bug</td><td><code>bug</code></td><td>High</td></tr>
+<tr><td>Feature request</td><td>Story, Task</td><td><code>feature</code></td><td>Medium</td></tr>
+<tr><td>User story with acceptance criteria</td><td>Story</td><td><code>story</code></td><td>Medium</td></tr>
+<tr><td>Technical spike</td><td>Task, Story</td><td><code>spike</code></td><td>Medium</td></tr>
+<tr><td>Production incident</td><td>Bug, Task</td><td><code>incident</code></td><td>Highest</td></tr>
+<tr><td>Test case</td><td>Task, Test</td><td><code>test</code></td><td>Medium</td></tr>
+<tr><td>Design doc / RFC</td><td>Task, Story, Epic</td><td><code>design</code></td><td>Medium</td></tr>
+<tr><td>Epic brief</td><td>Epic</td><td>—</td><td>Medium</td></tr>
+<tr><td>Decision record</td><td>Task, Story</td><td><code>decision</code></td><td>Low</td></tr>
+<tr><td>Handover / offboarding</td><td>Task</td><td><code>handover</code></td><td>Medium</td></tr>
+</table>
+
+<p>The issue type column lists <strong>preferences in order</strong>: the app uses the first one
+the selected project actually has. A template with no available issue type in that project is
+hidden rather than shown and then failed.</p>
+
+<p><strong>The templates are fixed text stored in the app.</strong> They are not generated, and
+nothing you type is sent anywhere to produce them.</p>
+
+<h2>5. Which templates you see</h2>
+
+<p>Issue types are matched on their <strong>internal (untranslated) name</strong> first, and only
+then on the name your site displays. That is deliberate: on a site running in Chinese, the Bug
+issue type is displayed as <em>缺陷</em>, and a template matched by the displayed name alone would
+find nothing. Matching on the internal name first means the same template set works on every
+localisation; the displayed name is kept as a fallback for sites that rename their types.</p>
+
+<p>Two consequences worth knowing:</p>
+<ul>
+  <li><strong>Sub-task types are never used.</strong> A sub-task needs a parent, and choosing a
+  parent is a decision outside this app. A project that only has sub-tasks available will show
+  no templates, and will say so.</li>
+  <li><strong>Renamed issue types may not match.</strong> If your site has renamed its issue
+  types (for example Bug → Defect), the internal name is usually unchanged and matching still
+  works. If it does not match, the template is hidden — and you can still pick a different
+  template and set the issue type by hand.</li>
+</ul>
+
+<h2>6. Writing the description</h2>
+
+<p>The description box is plain text with a small amount of markup. It is converted to Jira's
+document format when it is sent, so the result is a real formatted description, not a wall of
+plain text.</p>
+
+<pre>## A heading
+### A smaller heading
+
+A paragraph. **bold**, *italic* and `monospace`.
+
+- a bullet
+- [ ] a checkbox that is not done
+- [x] a checkbox that is done
+
+1. a numbered item
+2. another
+
+---            (a horizontal rule)
+
+```js
+a fenced code block
+```</pre>
+
+<div class="note">
+<strong>Checkboxes are characters, not Jira task items.</strong> Jira's issue description format
+has no checkbox element, so <code>- [ ]</code> becomes a bullet beginning with ☐ and
+<code>- [x]</code> becomes one beginning with ☑. They read the same and are checked by hand —
+they are not clickable, and they do not appear in a to-do list. The app does this rather than
+emitting a task item that Jira would reject and fail the whole creation.
+</div>
+
+<p>Two placeholders are filled in for you at the moment you press create:</p>
+
+<table>
+<tr><th>Placeholder</th><th>Becomes</th></tr>
+<tr><td><code>{{date}}</code></td><td>Today's date, as <code>2026-10-05</code></td></tr>
+<tr><td><code>{{project}}</code></td><td>The project key you selected, as <code>PLAT</code></td></tr>
+</table>
+
+<p>A placeholder the app does not recognise is left <strong>exactly as typed</strong>. If you
+mistype <code>{{dat}}</code>, it stays in the issue text and you can see it. It is not replaced
+with an empty string.</p>
+
+<h2>7. What the app adjusts, and what it refuses</h2>
+
+<p>Where the app has to change or drop something you typed, it <strong>says so on the
+confirmation</strong> — it never adjusts silently. This table is the complete list.</p>
+
+<table>
+<tr><th>Situation</th><th>What happens</th></tr>
+<tr><td>Summary contains a line break or a tab</td><td>It is put on one line, and reported</td></tr>
+<tr><td>Summary is longer than 255 characters</td><td>It is cut to 255, and reported</td></tr>
+<tr><td>A label contains a space</td><td>Spaces become dashes (<code>needs triage</code> →
+<code>needs-triage</code>), and reported</td></tr>
+<tr><td>Two labels differ only in case</td><td>The duplicate is dropped, and reported</td></tr>
+<tr><td>A component is not in the project</td><td>It is dropped, and reported</td></tr>
+<tr><td>The priority does not exist in the project</td><td>Priority is left at the project
+default, and reported</td></tr>
+</table>
+
+<p>And what the app <strong>refuses</strong> — these stop the creation instead of guessing:</p>
+
+<ul>
+  <li><strong>An empty summary.</strong> Nothing is created.</li>
+  <li><strong>No issue type.</strong> Nothing is created.</li>
+  <li><strong>A project or issue type you cannot create in.</strong> The app re-checks this
+  server-side against Jira itself before creating anything.</li>
+</ul>
+
+<div class="note">
+<strong>An empty description is not sent at all.</strong> If you clear the description box, the
+app omits the field rather than sending an empty document — so a project's own default
+description (if your Jira has one configured for that issue type) is not overwritten with
+nothing. An empty box means "say nothing", not "erase what Jira would have put there".
+</div>
+
+<h2>8. Priorities and localisation</h2>
+
+<p>Priorities are per-site and may be localised. On a site with a partially translated priority
+scheme, the list can legitimately contain both a localised name and an English one — for example
+<em>严重</em> alongside <em>Highest</em>. The app offers exactly the priorities your project
+reports and matches on the name it is given. It never maps "Critical" onto some other priority
+because the name looks similar.</p>
+
+<h2>9. Languages</h2>
+
+<p>The app interface is available in <strong>English</strong> and <strong>Chinese
+(Simplified)</strong>. Issue type, component and priority names are shown as your Jira displays
+them, because they are your Jira's values, not the app's text.</p>
+
+<h2>10. Data and privacy</h2>
+
+<p>The app reads the projects you can file work in and their issue types, components and
+priorities, using a read scope; it creates the one issue you confirm, using a write scope; it
+keeps no app storage of its own; and it sends nothing to any external service. The full
+description of what is read, created, stored and logged is in the
+<a href="./privacy.html">privacy policy</a>, and the scopes and security posture are on the
+<a href="./security.html">security page</a>.</p>
+
+<h2>11. Support</h2>
+
+<p>Questions, bug reports and feature requests: see the
+<a href="./support.html">support page</a>, or email
+<a href="mailto:wangxydlut@gmail.com">wangxydlut@gmail.com</a>.</p>
+
+<footer>
+Issue Templates for Jira — an app on the Atlassian Marketplace.
+See also the <a href="./privacy.html">privacy policy</a> and the
+<a href="./support.html">support page</a>.
+</footer>
+
+</main></body></html>
