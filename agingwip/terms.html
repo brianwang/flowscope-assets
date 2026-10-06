@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terms of Service — Aging WIP Chart for Jira</title>
+<style>
+:root{--bg:#fff;--fg:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--code:#f4f5f7;--warn:#fffae6;--warnline:#ffe380}
+@media (prefers-color-scheme:dark){:root{--bg:#161a1d;--fg:#dfe1e6;--muted:#9fadbc;--line:#2c333a;--code:#22272b;--warn:#2b2416;--warnline:#533f04}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+h2{font-size:18px;margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+h3{font-size:15px;margin:22px 0 6px}
+p,li{color:var(--fg)}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+ul,ol{padding-left:22px}li{margin:5px 0}
+code{background:var(--code);padding:2px 5px;border-radius:3px;font-size:13px;
+ font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.note{background:var(--warn);border-left:3px solid var(--warnline);padding:12px 14px;
+ border-radius:3px;margin:16px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#579dff}}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+ color:var(--muted);font-size:13px}
+</style></head><body><main>
+
+<h1>Terms of Service</h1>
+<p class="sub"><strong>Aging WIP Chart for Jira Dashboard</strong></p>
+<p class="sub">Last updated: 6 October 2026</p>
+
+<p>These terms govern your use of the app. They are written to describe what the app actually
+does, not to restate a generic agreement.</p>
+
+<h2>1. What the app is</h2>
+
+<p>The app is a <strong>Jira dashboard gadget</strong>. For issues matched by a JQL filter that
+a Jira administrator configures on the gadget, it shows how long each in-flight item has been
+sitting in its current status, with 50/70/85/95th percentile lines. It reads, per issue, the
+issue key, the status transition history and the creation date, through the official Jira REST
+API using the <code>read:jira-work</code> scope and nothing else. All requests are made
+<strong>as the user who is viewing the gadget</strong>, so it can only ever show issues that the
+person looking at the dashboard is already allowed to see.</p>
+
+<p>The app writes one short-lived cache record per configuration per user — keyed by the
+Atlassian account ID of the viewer, holding the computed result only, kept for
+<strong>1 hour</strong> — into <strong>Atlassian's own Forge app storage</strong>. The app has
+<strong>no server, no database and no storage of its own</strong>, and it makes
+<strong>no outbound network requests</strong> to any host other than Atlassian's Jira API.</p>
+
+<h2>2. Licence</h2>
+
+<p>We grant you a non-exclusive, non-transferable, non-sublicensable right to use the app inside
+the Atlassian cloud products you are licensed for, for as long as your subscription is active.
+You may not resell the app, or attempt to circumvent its licensing.</p>
+
+<h2>3. Plans, billing and refunds</h2>
+
+<p>Purchases, renewals, cancellations and refunds are <strong>administered by
+Atlassian</strong> under the Atlassian Marketplace terms. We do not invoice you directly, and
+we never receive your payment details. Current prices, including the user tiers they apply to,
+are published on the app's Marketplace listing.</p>
+
+<ul>
+  <li>Billing follows Atlassian's standard model for the app's pricing, based on your site's
+      user tier at the time of billing.</li>
+  <li>If we change a price, Atlassian's standard price override applies: existing customers keep
+      the lower price until their next renewal.</li>
+</ul>
+
+<h2>4. Support</h2>
+
+<p>Support is provided on a best-effort basis by email at
+<strong>wangxydlut@gmail.com</strong>. We do not promise a response time or an availability
+level. The app is a dashboard gadget inside Jira and depends on Jira being available; when
+Jira is unavailable, so is the app.</p>
+
+<h2>5. No warranty</h2>
+
+<p>The app is provided "as is" and "as available". We do not warrant that it is error-free.
+The app shows ages and percentile lines computed from the status transition history Jira
+returns; it does not check whether the configured JQL filter means what you intended, and
+issues that the viewing user is not allowed to see are simply not shown — that is Jira's
+permission model working, not a defect. Where Jira reports incomplete or unusual history for
+an issue, the app reports the numbers Jira's history supports rather than filling gaps for
+you. A percentile line summarizes how the current set of matched items is spread across ages;
+what that line should prompt you to do is a management judgement the app does not make.</p>
+
+<h2>6. Limitation of liability</h2>
+
+<p>To the maximum extent permitted by applicable law, our total liability arising out of or
+relating to the app is limited to the amount you paid for it in the twelve months before the
+claim arose. We are not liable for indirect, incidental or consequential losses, or for lost
+profits or lost data. Nothing in these terms limits any right you have that cannot be limited
+by law.</p>
+
+<h2>7. Changes to the app and to these terms</h2>
+
+<p>We may release new versions of the app, and may change these terms. A material change will be
+reflected by the "Last updated" date at the top of this page. Continuing to use the app after
+that date means you accept the updated terms.</p>
+
+<h2>8. Termination</h2>
+
+<p>You can stop using the app at any time by removing the gadget from your dashboards and
+uninstalling the app from your site. Uninstalling also removes the app's Forge storage,
+including any cache entry that has not yet expired. We may stop distributing the app; if we do,
+Atlassian's rules govern what happens to installations that already exist.</p>
+
+<h2>9. Governing law</h2>
+
+<p>These terms are governed by the laws of the People's Republic of China, without regard to
+its conflict-of-law rules.</p>
+
+<h2>10. Contact</h2>
+
+<p>Questions about these terms, or about the app: <strong>wangxydlut@gmail.com</strong>.</p>
+
+<footer>
+<p>Aging WIP Chart for Jira Dashboard — published by <strong>andy20261001</strong> on the
+Atlassian Marketplace. See also the <a href="privacy.html">Privacy Policy</a>,
+<a href="security.html">Security</a>, <a href="support.html">Support</a> and
+<a href="documentation.html">Documentation</a>.</p>
+</footer>
+</main></body></html>
