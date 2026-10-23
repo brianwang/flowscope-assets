@@ -1,8 +1,6 @@
-# flowscope-assets
+# flowscope-assets (retired)
 
-Static assets for the **Cycle Time Scatter Chart for Jira Dashboard** Forge app.
+本仓库曾承载 8 个 Atlassian Forge 应用的落地页与静态资产（thumbnail / policy 页 / 产品页）。
+产品线于 2026-10-23 终止，站点已下线，历史页面在 git 历史里可找回。
 
-`thumbnail.png` / `thumbnail.svg` — the gadget thumbnail referenced by the app manifest.
-Served from here as a raw URL because the Forge manifest `thumbnail` field takes a public URL.
-
-The app itself is not in this repository.
+The Atlassian Forge app line was discontinued on 2026-10-23; all product pages were taken down.
